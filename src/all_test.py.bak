@@ -1,0 +1,108 @@
+#coding=utf-8
+
+import os
+import time
+import unittest
+
+import requests
+
+from HTMLTestRunner import HTMLTestRunner
+from addTestCase import addTestCase, addTestCase1
+from tools.tools import sendMail, setConf, getConf, new_report, create_phone
+
+
+def createHTML(discover):
+
+    #创建html报告
+    
+    nowTime = time.strftime('%Y-%m-%d %H_%M_%S', time.localtime(time.time()))
+    setConf('data','fileName',nowTime+'_result.html')
+    fileName = './report/'+nowTime+'_result.html'
+    stream = open(fileName,'wb')
+    runner = HTMLTestRunner(stream = stream,
+                         title = u"%s接口自动化测试报告"%getConf('constant','url'),
+                         description = u"用例执行情况",
+                         verbosity = 2)
+    runner.run(discover)
+    stream.close()
+    #sendMail()
+    #os.remove(new_report())
+
+
+    
+if __name__ == "__main__" :
+
+    import argparse
+    parse = argparse.ArgumentParser(description="interface test")
+    parse.add_argument('-num', nargs='?',choices=['1', '2', '3', '4', '5','1s','2s','3s','4s','5s'],
+                       help="1:t-docker 2:care 3:care-us 4:care-sg 5:dev-dcoker  xs:https")
+    parse.add_argument('-url', nargs='?', type=str, help="input url")
+    parse.add_argument('-username', nargs='?', type=str, help="input username")
+    parse.add_argument('-password', nargs='?', type=str, help="input password")
+    parse.add_argument('-email', nargs='?', type=str, help="input email")
+    parse.add_argument('-phone', nargs='?', type=str, help="input phoneNumber")
+    args = parse.parse_args()
+
+    if args.num == '1':
+        setConf("constant", "url", "http://t-docker.novaicare.com")
+    elif args.num == '1s':
+        setConf("constant", "url", "https://t-docker.novaicare.com")
+    elif args.num == '2':
+        setConf("constant", "url", "http://care.novaicare.com")
+    elif args.num == '2s':
+        setConf("constant", "url", "https://care.novaicare.com")
+    elif args.num == '3':
+        setConf("constant", "url", "http://care-us.novaicare.com")
+    elif args.num == '3s':
+        setConf("constant", "url", "https://care-us.novaicare.com")
+    elif args.num == '4':
+        setConf("constant", "url", "http://care-sg.novaicare.com")
+    elif args.num == '4s':
+        setConf("constant", "url", "https://care-sg.novaicare.com")
+    elif args.num == '5':
+        setConf("constant", "url", 'http://dev-docker.novaicare.com')
+    elif args.num == '5s':
+        setConf("constant", "url", 'https://dev-docker.novaicare.com')
+    else:
+        setConf("constant", "url", "http://t-docker.novaicare.com")
+
+    if args.url:
+        setConf("constant", "url", args.url)
+
+
+    if args.username:
+        setConf("constant", "user", args.username)
+    else:
+        setConf("constant", "user", 'chenyongfa')
+
+    if args.password:
+        setConf("constant", "password", args.password)
+    else:
+        setConf("constant", "password", '123456')
+
+    if args.email:
+        setConf("data", "email", args.email)
+    else:
+        setConf("data", "email", 'novatest@126.com')
+
+    if args.phone:
+        setConf("data", "phone", args.phone)
+    else:
+        setConf("data", "phone", '')
+
+
+    num = create_phone()
+    setConf("constant","mac",num)
+    setConf("constant","sn",num)
+
+
+
+
+    # 添加用例
+    request = requests.Session()
+    request.verify = False
+    discover = addTestCase(request)
+    createHTML(discover)
+    discover = addTestCase1(request)
+    createHTML(discover)
+

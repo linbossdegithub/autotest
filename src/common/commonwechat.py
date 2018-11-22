@@ -1,0 +1,57 @@
+#coding=utf-8
+
+
+import requests
+#转化为json
+from flask import json
+from tools.tools import  getHeaders, getConf,setConf,getHeadersE
+
+def rq_wechatCreate(**kwarg):
+    u'''建议反馈'''
+    url = getConf("constant","urlw")+'/wx/backend/api/feedback/wechatCreate'  
+    headers = getHeaders()
+    response = requests.post(url=url,headers=headers,json=kwarg)
+    return eval((response.text).replace("false","False").replace("true","True"))
+def rq_detail(**kwarg):
+    u'''故障告警详情'''
+    url = getConf("constant","urlw")+'/wx/backend/api/wechat/detail ' 
+    response = requests.post(url=url,json=kwarg)
+    return  response
+
+def rq_addImg(**kwarg):
+    u'''上传图片'''
+    url = getConf("constant","urlw")+'/wx/backend/api/wechat/addImg'  
+    headers = getHeaders()
+    response = requests.post(url=url,headers=headers,json=kwarg)
+    return eval((response.text).replace("false","False").replace("true","True"))
+
+def rq_getJsParam (**kwarg):
+    u'''   '''
+    url = getConf("constant","urlw")+'/wx/backend/api/wechat/getJsParam '  
+    response = requests.get(url)
+    return response
+
+def rq_feedback  (**kwarg):
+    u'''意见反馈提交'''
+    url = getConf("constant","urlw")+'/wx/backend/api/wechat/feedback  '  
+    response = requests.get(url)
+    return  response
+
+def rq_clickLogin  (**kwarg):
+    u'''获取登录界面'''
+    url = getConf("constant","urlw")+'/wx/backend/wechat/clickLogin '  
+    response = requests.get(url)
+    print type(response)
+    return  response
+
+def rq_loginCheck(**kwarg):
+    u'''登录检查'''
+    url = getConf("constant","urlw")+'/wx/backend/api/wechat/loginCheck'  
+    headers = getHeaders()
+    response = requests.post(url=url,headers=headers,json=kwarg)
+    strdict=json.loads(response.text)
+    return strdict
+
+
+
+

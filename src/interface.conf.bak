@@ -1,0 +1,37 @@
+[constant]
+url = http://t-docker.novaicare.com
+urlw = http://wechat.novaicare.com
+user = chenyongfa
+user_e = b02e397b
+password = 123456
+password_e = c62e6f02
+authorization = Bearer def50200a04523560c39cce792855d178354763efc60a3f407b2f0674ba9441141391d1e2fca4fb2e7d4688f4e26f7457d523a6b6c8a0984e2ac6d51e8340c6ac6e571e2c2ed4fcebae41a7f725a79bc81a569f8e58b8df8
+mac = 1123456789ABCDE1
+sn = 1123456789ABCDEF-FF1
+led_name = auto_test
+
+[data]
+cookie = PHPSESSID=2e9ili0h2si7254n4cof7u0o53
+sid = 4665
+camera_id1 = 9041
+camera_id2 = 9042
+camera_id3 = 9043
+camera_id4 = 9044
+tem_id = 519
+tem_spot_name = $abc
+countrycode = 86
+phone = 18294447759
+email = novatest@126.com
+language = zh-cn
+token = hpMXHSSME+3efOGjjJHmJPPxTYYNG4QB
+tokene = ssMXHSSME+2L55ZW4ozf7spkR99sCH3f
+uid = 2548
+address = 
+label = 0
+name = 
+status = 0
+openid = olKdEwH__QGy8I_i1Yoh8347pqfA
+filename = 2018-10-26 08_26_23_result.html
+reportid = 330
+customreportid = 353
+

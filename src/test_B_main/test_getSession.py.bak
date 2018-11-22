@@ -1,0 +1,45 @@
+#coding=utf-8
+from parametrizedTestCase import ParametrizedTestCase
+from tools.tools import getConf, setConf
+
+
+class Test_getSession(ParametrizedTestCase):
+    def test_a(self):
+        u'''get cookie'''
+        url = getConf('constant','url')+'/login/index/redirect/%252F.html'
+        result = self.param.get(url)
+        session_id = result.cookies['PHPSESSID']
+        print session_id
+        if session_id :
+            setConf('data','Cookie','PHPSESSID='+result.cookies['PHPSESSID'])
+        else:
+            raise Exception("PHPSESSID is not obtained")
+
+        u'''login check'''
+        url = getConf('constant','url')+'/login/loginCheck'
+        headers = {}
+        headers['Origin'] = getConf('constant','url')
+        headers['Referer'] = getConf('constant','url')+'/login/index/redirect/%252F.html'
+        headers["Cookie"] = getConf("data", "Cookie")
+        headers["X-Requested-With"] ="XMLHttpRequest"
+        print getConf("data", "Cookie")
+        data={}
+        data['username'] = getConf('constant','user')
+        data['password'] = getConf('constant','password')
+        result = self.param.request(method='get', url=url,headers=headers,params=data)
+        print result.text
+
+        u'''get authorization'''
+        url = getConf('constant','url')+'/'
+        headers = {}
+        headers['Cookie'] = getConf('data','cookie')
+        result = self.param.request(method='get', url=url, headers=headers)
+        # print result.text
+        import re
+        content = result.text
+        # content = str(result.text,)
+        authorization =  re.findall(r"value=\'(.+?)\' id=\"token\"", content)
+        authorization =  'Bearer '+ authorization[0]
+        print authorization
+        setConf('constant','authorization',authorization)
+
